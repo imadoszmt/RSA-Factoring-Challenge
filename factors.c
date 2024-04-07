@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
 	{
             if (num % factor == 0) 
 	    {
-                printf("%d=%d*%d\n", num, factor, num / factor);
+                printf("%d=%d*%d\n", num, num / factor,factors.cfactors.cfactor);
                 break;
             }
             factor++;
