@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-FILE=$1
+FILE="$1"
 
-while read NUMBER
+while read -r NUMBER; 
 do
-    factors=($(factor $NUMBER))
-    echo "$NUMBER=$(($NUMBER/${factors[1]}))*${factors[1]}"
-done < $FILE
+    factors=$(factor "$NUMBER")
+    factor_arr=($factors)
+    echo "$NUMBER=$((${factor_arr[1]}))*${factor_arr[1]}"
+done < "$FILE"
+
