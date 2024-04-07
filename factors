@@ -7,15 +7,28 @@ if [[ ! -f $FILE ]]; then
   exit 1
 fi
 
-while read -r NUMBER; do
-  if [[ $NUMBER =~ ^[0-9]+$ ]]; then
-    factors=($(factor $NUMBER))
-    if [[ ${#factors[@]} -ge 2 ]]; then
-      echo "$NUMBER=$(($NUMBER/${factors[1]}))*${factors[1]}"
-    else
-      echo "$NUMBER is a prime number."
-    fi
+while read -r LINE; do
+  # Check for empty line or whitespace only
+  if [[ -z "$LINE" ]]; then
+    echo "Warning: Ignoring empty line." >&2
+    continue
+  fi
+
+  # Check for valid natural number
+  if [[ ! "$LINE" =~ ^[0-9]+$ ]]; then
+    echo "Warning: Ignoring invalid line: '$LINE'" >&2
+    continue
+  fi
+
+  NUMBER=$LINE
+
+  factors=($(factor $NUMBER))
+  if [[ ${#factors[@]} -ge 2 ]]; then
+    # Extract first factor (excluding colon and whitespace)
+    factor1=${factors[1]##*:}
+    echo "$NUMBER=$(($NUMBER/$factor1))*$factor1"
   else
-    echo "Warning: Ignoring invalid line: '$NUMBER'" >&2
+    echo "$NUMBER is a prime number."
   fi
 done < $FILE
+
