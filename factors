@@ -1,11 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 
-FILE="$1"
+FILE=$1
 
-while IFS= read -r NUM; do
-    factors=($(factor "$NUM" 2>/dev/null))
-    if [ ${#factors[@]} -ge 2 ]; then
-        echo "$NUM=${factors[2]}*${factors[1]}"
-    fi
-done < "$FILE"
-
+while read NUMBER;
+do
+    factors=($(factor $NUMBER))
+    echo "$NUMBER=$(($NUMBER/${factors[1]}))*${factors[1]}"
+done < $FILE
