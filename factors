@@ -2,8 +2,20 @@
 
 FILE=$1
 
-while read NUMBER;
-do
+if [[ ! -f $FILE ]]; then
+  echo "Error: File '$FILE' not found." >&2
+  exit 1
+fi
+
+while read -r NUMBER; do
+  if [[ $NUMBER =~ ^[0-9]+$ ]]; then
     factors=($(factor $NUMBER))
-    echo "$NUMBER=$(($NUMBER/${factors[1]}))*${factors[1]}"
+    if [[ ${#factors[@]} -ge 2 ]]; then
+      echo "$NUMBER=$(($NUMBER/${factors[1]}))*${factors[1]}"
+    else
+      echo "$NUMBER is a prime number."
+    fi
+  else
+    echo "Warning: Ignoring invalid line: '$NUMBER'" >&2
+  fi
 done < $FILE
