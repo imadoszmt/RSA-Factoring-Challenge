@@ -1,0 +1,25 @@
+#!/usr/bin/bash
+
+NUMBER=$(cat "$1")
+
+function get_prime_factors() {
+    local n=$1
+    local factors=()
+    local d=2
+
+    while ((n > 1)); do
+        while ((n % d == 0)); do
+            factors+=("$d")
+            n=$((n / d))
+        done
+        ((d++))
+    done
+
+    echo "${factors[@]}"
+}
+
+factors=($(get_prime_factors $NUMBER))
+p=${factors[0]}
+q=${factors[1]}
+echo "$NUMBER=$p*$q"
+
