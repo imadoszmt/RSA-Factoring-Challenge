@@ -1,57 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/** Function to factorize numbers**/
-void factorize(const char *filename)
-{
-	FILE *file = fopen(filename, "r");
-
-	if (file == NULL)
-	{
-	perror("Error opening file");
-	exit(EXIT_FAILURE);
-	}
-
-	char line[100];
-
-	while (fgets(line, sizeof(line), file))
-	{
-		int number = atoi(line);
-
-		if (number % 2 == 0)
-		{
-			printf("%d=%d*%d\n", number, number / 2, 2);
-			continue;
-		}
-	int i = 3;
-
-	while (i < number / 2)
-	{
-		if (number % i == 0)
-		{
-			printf("%d=%d*%d\n", number, number / i, i);
-			break;
-		}
-		i += 2;
-	}
-	if (i == (number / 2) + 1)
-	{
-		printf("%d=%d*%d\n", number, number, 1);
-	}
-	}
-
-	fclose(file);
+void factorize(int value) {
+    int i = 2;
+    
+    if (value < 2)
+        return;
+    
+    while (value % i)
+        i++;
+    
+    printf("%.0f=%.0f*%.0f\n", (float)value, (float)value / i, (float)i);
 }
-/** main function that call factorize() for factorization**/
 
-int main(int argc, char *argv[])
-{
-	if (argc != 2)
-	{
-		printf("Usage: %s <file>\n", argv[0]);
-		return (EXIT_FAILURE);
-	}
-
-	factorize(argv[1]);
-	return (EXIT_SUCCESS);
+int main(int argc, char *argv[]) {
+    if (argc != 2)
+        exit(EXIT_FAILURE);
+    
+    FILE *file = fopen(argv[1], "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        exit(EXIT_FAILURE);
+    }
+    
+    char line[100];
+    while (fgets(line, sizeof(line), file) != NULL) {
+        int value = atoi(line);
+        factorize(value);
+    }
+    
+    fclose(file);
+    return 0;
 }
+
